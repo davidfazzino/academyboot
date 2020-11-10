@@ -14,7 +14,7 @@ public class AcademyBootApplication implements CommandLineRunner {
 
 	@Autowired
 	StudentController controller;
-	
+	//testing qwertyuiopsdfghjklò
 	public static void main(String[] args) {
 		SpringApplication.run(AcademyBootApplication.class, args);
 	}
