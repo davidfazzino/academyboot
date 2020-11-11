@@ -49,8 +49,8 @@ public class Student {
 	@Column ( name ="sesso")
 	private boolean sesso;
 	
-	@OneToMany(mappedBy="student", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<Iscrizione> listaIscrizione;
+	@OneToMany(mappedBy="student", fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
+	private List<Iscrizione> listaIscrizione=new ArrayList<Iscrizione>();
 	
 	public List<Iscrizione> getListaIscrizione() {
 		return listaIscrizione;

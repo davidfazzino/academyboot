@@ -13,11 +13,9 @@ import it.bit.academy.academyBoot.model.Student;
 @Repository
 public interface StudentDao extends JpaRepository<Student, Integer>{
 
-	@Query("SELECT s FROM Student s WHERE s.nome LIKE %?1%")
-	List<Student> findByNameLike(String partialName);
+	List<Student> findByNomeContaining(String partialName);
 	
-	@Query("SELECT s FROM Student s WHERE s.cognome LIKE %?1%")
-	List<Student> findByCognomeLike(String partialSurname);
+	List<Student> findByCognomeContaining(String partialSurname);
 	
 	@Query("SELECT s FROM Student s JOIN s.listaIscrizione l WHERE l.course.id = :course")
 	List<Student> findByCourse(@Param("course") int courseId);

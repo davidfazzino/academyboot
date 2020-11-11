@@ -34,6 +34,10 @@ public class StudentDto {
 		this.listaIscrizione = s.getListaIscrizione().stream().map(IscrizioneDto::new).collect(Collectors.toList());
 	}
 
+	public StudentDto() {
+		
+	}
+
 	public int getId() {
 		return id;
 	}

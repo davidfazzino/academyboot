@@ -10,16 +10,20 @@ public class IscrizioneDto {
 	private LocalDate data;
 	private Integer valutazione;
 	private Boolean ritirato;
-	private Integer student;
-	private Integer course ;
+	private Integer studentId;
+	private Integer courseId ;
 	
 	public IscrizioneDto (Iscrizione i) {
 		this.id = i.getId();
 		this.data = i.getData();
 		this.valutazione = i.getValutazione();
 		this.ritirato = i.isRitirato();
-		this.student = i.getStudent().getId();
-		this.course = i.getCourse().getId();
+		this.studentId = i.getStudent().getId();
+		this.courseId = i.getCourse().getId();
+	}
+
+	public IscrizioneDto() {
+		super();
 	}
 
 	public Integer getId() {
@@ -54,20 +58,20 @@ public class IscrizioneDto {
 		this.ritirato = ritirato;
 	}
 
-	public Integer getStudent() {
-		return student;
+	public Integer getStudentId() {
+		return studentId;
 	}
 
-	public void setStudent(Integer student) {
-		this.student = student;
+	public void setStudentId(Integer student) {
+		this.studentId = student;
 	}
 
-	public Integer getCourse() {
-		return course;
+	public Integer getCourseId() {
+		return courseId;
 	}
 
-	public void setCourse(Integer course) {
-		this.course = course;
+	public void setCourseId(Integer course) {
+		this.courseId = course;
 	}
 	
 }

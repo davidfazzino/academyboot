@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.bit.academy.academyBoot.exceptions.DataException;
+import it.bit.academy.academyBoot.exceptions.StudentNotFoundException;
 import it.bit.academy.academyBoot.model.Student;
 import it.bit.academy.academyBoot.repository.StudentDao;
 
@@ -15,7 +16,9 @@ import it.bit.academy.academyBoot.repository.StudentDao;
 public class StudentServiceImpl implements StudentService {
 
 	private StudentDao studentDao;
-	
+	protected StudentDao getStudentDao() {
+		return studentDao;
+	}
 	@Autowired
 	public StudentServiceImpl(StudentDao studentDao) {
 		this.studentDao = studentDao;
@@ -29,13 +32,10 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	@Transactional
-	public Student findById(int id) throws DataException {
+	public Student findById(int id) throws StudentNotFoundException {
 		Optional<Student> st = studentDao.findById(id);
-		if(st.isPresent()) {
-			return st.get();
-		}else {
-			throw new DataException("Studente con id " + id + "non trovato!");
-		}
+		
+		return st.orElseThrow(()->new StudentNotFoundException("Studente con id " + id + "non trovato!"));
 		
 	}
 
@@ -47,14 +47,11 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	@Transactional
-	public Student remove(int id) throws DataException {
+	public void remove(int id) throws StudentNotFoundException {
 		Optional<Student> st = studentDao.findById(id);
-		if(st.isPresent()) {
-			studentDao.delete(st.get());
-			return st.get();
-		}else {
-			throw new DataException("Non puoi eliminare lo studente con id " + id + ". Non trovato sul DB!");
-		}
+		Student s = st.orElseThrow(()->new StudentNotFoundException("Studente con id " + id + "non trovato!"));
+		studentDao.delete(s);
+		
 	}
 
 	@Override
@@ -66,12 +63,17 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	@Transactional
 	public List<Student> findByNameLike(String partialName){
-		return studentDao.findByNameLike(partialName);
+		return studentDao.findByNomeContaining(partialName);
 	}
 
 	@Override
 	public List<Student> findByCourse(int courseId) {
 		return studentDao.findByCourse(courseId);
+	}
+
+	@Override
+	public List<Student> findByCognomeLike(String partialSurname) {
+		return studentDao.findByCognomeContaining(partialSurname);
 	}
 
 }

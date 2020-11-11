@@ -55,7 +55,7 @@ public class Course {
 	@Column ( name ="azienda")
 	private String azienda;
 	
-	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade=CascadeType.REMOVE,orphanRemoval=true)
 	private List<Iscrizione> listaIscrizione;
 	
 	public int getMaxIscritti() {

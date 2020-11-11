@@ -1,6 +1,7 @@
 package it.bit.academy.academyBoot.model;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
@@ -44,11 +46,31 @@ public class Iscrizione {
 	}
 	
 	
-	public int getId() {
+	public Iscrizione( Student student, Course course,LocalDate data) {
+		
+		this.data = data;
+		this.student = student;
+		this.course = course;
+	}
+
+
+	public Iscrizione(Integer id, LocalDate data, Integer valutazione, Boolean ritirato, Student student,
+			Course course) {
+		super();
+		this.id = id;
+		this.data = data;
+		this.valutazione = valutazione;
+		this.ritirato = ritirato;
+		this.student = student;
+		this.course = course;
+	}
+
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

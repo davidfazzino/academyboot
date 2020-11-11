@@ -14,7 +14,7 @@ public class AcademyBootApplication implements CommandLineRunner {
 
 	@Autowired
 	StudentController controller;
-	//testing qwertyuiopsdfghjklò
+
 	public static void main(String[] args) {
 		SpringApplication.run(AcademyBootApplication.class, args);
 	}
@@ -22,8 +22,8 @@ public class AcademyBootApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		controller.findAll().stream().map(StudentDto::getNome).forEach(System.out::println);
-		controller.findByNameLike("rio").stream().map(StudentDto::getNome).forEach(System.out::println);
+		//controller.findAll().stream().map(StudentDto::getNome).forEach(System.out::println);
+		//controller.findByNameLike("rio").stream().map(StudentDto::getNome).forEach(System.out::println);
 	}
 
 }
