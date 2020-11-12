@@ -1,19 +1,61 @@
 package it.bit.academy.academyBoot.model;
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table ( name = "insegnante" )
 public class Professor {
+	
+	@Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @Column( name ="id")
 	private int id; 
+	
+	@Column( name ="nome")
 	private String nome; 
+	
+	@Column( name ="cognome")
 	private String cognome; 
+	
+	@Column( name ="codiceFiscale")
 	private String codiceFiscale;
+	
+	@Column( name ="dataDiNascita")
 	private LocalDate dataDiNascita;
+	
+	@Column( name ="email")
 	private String email; 
+	
+	@Column( name ="indirizzo")
 	private String indirizzo;
+	
+	@Column( name ="telefono")
 	private String telefono; 
+	
+	@Column( name ="costoOrario")
 	private int costoOrario; 
+	
+	@Column( name ="partitaIva")
 	private String partitaIva;
+	
+	@Column( name ="titoloDiStudio")
 	private String titoloDiStudio;
 	
+	@OneToMany(mappedBy = "professor",fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)
+	private List<Modulo>listaModulo;
+	public Professor() {
+		
+	}
 	public Professor(int id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita, String email,
 			String indirizzo, String telefono, int costoOrario, String partitaIva, String titoloDiStudio) {
 		this.id = id;

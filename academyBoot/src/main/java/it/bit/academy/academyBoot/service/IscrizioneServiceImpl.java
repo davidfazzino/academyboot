@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.bit.academy.academyBoot.dto.DataIscrizione;
+import it.bit.academy.academyBoot.dto.DatiCreazioneIscrizione;
 import it.bit.academy.academyBoot.dto.IscrizioneDto;
 import it.bit.academy.academyBoot.dto.StudentDto;
 import it.bit.academy.academyBoot.exceptions.CourseNotFoundException;
@@ -48,7 +48,7 @@ public class IscrizioneServiceImpl implements IscrizioneService{
 
 	@Override
 	@Transactional
-	public void add(DataIscrizione t) throws StudentNotFoundException,CourseNotFoundException {
+	public void add(DatiCreazioneIscrizione t) throws StudentNotFoundException,CourseNotFoundException {
 		
 		int x=4;
 		System.out.println(t.getIdStudente() +"------------"+ t.getIdCorso());
@@ -80,7 +80,7 @@ public class IscrizioneServiceImpl implements IscrizioneService{
 	}
 
 	@Override
-	public Iscrizione add(Iscrizione t) throws Exception {
+	public Iscrizione add(Iscrizione t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -95,11 +95,20 @@ public class IscrizioneServiceImpl implements IscrizioneService{
 	}
 
 	@Override
-	public void updateValutazione(int id, int valutazione) throws Exception {
+	@Transactional
+	public void patchValutazione(int id, Integer valutazione, Boolean ritirato) throws IscrizioneNotFoundException {
 		Iscrizione i=iscrizioneDao.findById(id).orElseThrow(()->new IscrizioneNotFoundException("l'iscrizione non è stata trovata"));
-		i.setValutazione(valutazione);
-
-		iscrizioneDao.save(i);
+		
+		if(valutazione!=null) {
+			i.setValutazione(valutazione);
+		}
+		if(ritirato!=null) {
+			i.setRitirato(ritirato);
+		}
+		
+		
+		
+		//iscrizioneDao.save(i);
 	}
 
 	

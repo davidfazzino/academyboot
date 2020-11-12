@@ -184,7 +184,7 @@ public class Student {
 	
 	public void addNewIscrizione(Iscrizione i) {
 		if(listaIscrizione== null) {
-			listaIscrizione=new ArrayList();
+			listaIscrizione=new ArrayList<Iscrizione>();
 		}
 		listaIscrizione.add(i);
 		

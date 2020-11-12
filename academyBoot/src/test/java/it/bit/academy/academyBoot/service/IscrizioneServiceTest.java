@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -59,19 +60,44 @@ public class IscrizioneServiceTest {
 
 	@AfterEach
 	void tearDown() throws Exception {
-		
-		
+		try {
+			entityManager.remove(entityManager.getReference(Iscrizione.class, id1));
+		}catch(EntityNotFoundException e) {
+			//expected
+		}
+		entityManager.remove(entityManager.getReference(Student.class, studentid));
+		entityManager.remove(entityManager.getReference(Course.class, corsoid));
 	}
 
 	@Test
 	void testRemoveByCorsoAndStudente() {
-		try {
+		
 			
+		try {
 			iscrizioneService.removeByCorsoAndStudente(studentid, corsoid);
 			assertThrows(IscrizioneNotFoundException.class,()-> iscrizioneService.findById(id1));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IscrizioneNotFoundException e) {
+			fail("iscrizione non trovata quando dovrebbe essere presente prima della rimozione");
+		}
+		
+		
+	}
+	
+	@Test
+	void testPatchValutazione() {
+		
+		try {
+			iscrizioneService.patchValutazione(id1, 5,null);
+			Iscrizione is =entityManager.find(Iscrizione.class, id1);
+			assertEquals(5, is.getValutazione());
+			assertNull(is.isRitirato());
+			
+			iscrizioneService.patchValutazione(id1, null,true);
+			assertEquals(5, is.getValutazione());
+			assertTrue(is.isRitirato());
+			
+		} catch (IscrizioneNotFoundException e) {
+			fail("iscrizione non trovata quando dovrebbe essere presente prima della rimozione");
 		}
 		
 		

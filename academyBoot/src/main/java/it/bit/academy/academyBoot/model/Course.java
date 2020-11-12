@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -56,8 +57,21 @@ public class Course {
 	private String azienda;
 	
 	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade=CascadeType.REMOVE,orphanRemoval=true)
-	private List<Iscrizione> listaIscrizione;
+	private List<Iscrizione> listaIscrizione=new ArrayList<Iscrizione>();
 	
+	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade=CascadeType.REMOVE,orphanRemoval=true)
+	private List<Modulo> listaModulo = new ArrayList<Modulo>();
+	
+	public List<Modulo> getListaModulo() {
+		return listaModulo;
+	}
+	
+	
+
+	public void setListaModulo(List<Modulo> listaModulo) {
+		this.listaModulo = listaModulo;
+	}
+
 	public int getMaxIscritti() {
 		return maxIscritti;
 	}
@@ -78,13 +92,17 @@ public class Course {
 		
 	}
 	public void addNewIscrizione(Iscrizione i) {
-		if(listaIscrizione== null) {
-			listaIscrizione=new ArrayList();
-		}
+		
+		
+		
 		listaIscrizione.add(i);
 		
 	}
-
+	public void addNewModulo(Modulo i) {
+		
+		listaModulo.add(i);
+		
+	}
 	
 	
 	public Course( String nome, String materia, int max_iscritti, String categoria, int durataCorso, LocalDate dataInizio,

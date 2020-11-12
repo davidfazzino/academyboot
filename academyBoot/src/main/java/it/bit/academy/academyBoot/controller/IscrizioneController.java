@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import it.bit.academy.academyBoot.dto.DataIscrizione;
+import it.bit.academy.academyBoot.dto.DatiCreazioneIscrizione;
+import it.bit.academy.academyBoot.dto.DatiIscrizione;
 import it.bit.academy.academyBoot.dto.IscrizioneDto;
 import it.bit.academy.academyBoot.model.Iscrizione;
 import it.bit.academy.academyBoot.service.IscrizioneService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/iscrizione")
 public class IscrizioneController {
 	private IscrizioneService iscrizioneService ;
 
@@ -32,8 +33,8 @@ public class IscrizioneController {
 		this.iscrizioneService = iscrizione;
 	}
 	
-	@PostMapping("/iscrizione")
-	public void add(@RequestBody DataIscrizione i) {
+	@PostMapping()
+	public void add(@RequestBody DatiCreazioneIscrizione i) {
 		
 		try {
 			
@@ -45,7 +46,7 @@ public class IscrizioneController {
 		}
 	}
 	
-	@DeleteMapping(value = "/iscrizione/{id}")
+	@DeleteMapping(value = "/{id}")
 	public void delete(@PathVariable("id") int id) {
 		
 		try {
@@ -57,14 +58,14 @@ public class IscrizioneController {
 	}
 	
 	
-	@GetMapping(value="/iscrizione")
+	@GetMapping()
 	public List<IscrizioneDto> findAll() {
 		
 		return iscrizioneService.findAll().stream().map(IscrizioneDto::new).collect(Collectors.toList());
 		
 	}
 	
-	@DeleteMapping(value = "/iscrizione/{idStudente}/{idCorso}")
+	@DeleteMapping(value = "/{idStudente}/{idCorso}")
 	public void removeByCorsoAndStudente(@PathVariable("idStudente")int idStudente,@PathVariable("idCorso")int idCorso) {
 		try {
 			 iscrizioneService.removeByCorsoAndStudente(idStudente,idCorso);
@@ -75,15 +76,18 @@ public class IscrizioneController {
 	}
 	
 	
-	//http://localhost:8080/api/valutazione/8?val=30
-	@PatchMapping(value="/valutazione/{id}")
-	public void updateValutazione(@PathVariable("id")int id, @RequestParam("val")int valutazione) {
+	//http://localhost:8080/api/iscrizione
+	@PatchMapping()
+	public void updateValutazione( @RequestBody DatiIscrizione ds) {
 		try {
-			iscrizioneService.updateValutazione(id, valutazione);
+			iscrizioneService.patchValutazione(ds.getIscrizioneId(), ds.getValutazione(),ds.getRitirato());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Id non trovato");
 		}
 	}
+	
+	
+	
 	
 }
