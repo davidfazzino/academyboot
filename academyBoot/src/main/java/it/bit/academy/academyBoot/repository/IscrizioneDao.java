@@ -15,8 +15,5 @@ public interface IscrizioneDao extends JpaRepository<Iscrizione, Integer>{
 	@Query("select i from Iscrizione i where i.student.id = :idStudente and i.course.id= :idCorso")
 	Optional<Iscrizione> findByCorsoAndStudente(@Param("idStudente")int idStudente, @Param("idCorso")int idCorso);
 	
-	@Modifying
-	@Query(value="UPDATE iscrizione SET valutazione=:valutazione WHERE id=:id",nativeQuery = true)
-	void updateValutazione(@Param("id")int id,@Param("valutazione")int valutazione);
 	
 }

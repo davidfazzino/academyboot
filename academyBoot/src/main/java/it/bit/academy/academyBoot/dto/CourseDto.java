@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 
 import it.bit.academy.academyBoot.model.Course;
 import it.bit.academy.academyBoot.model.Iscrizione;
+import it.bit.academy.academyBoot.model.Modulo;
 
 public class CourseDto {
 
@@ -33,6 +34,7 @@ public class CourseDto {
 	private String azienda;
 	
 	private List<IscrizioneDto> listaIscrizione;
+	private List<ModuloDto> listaModuli;
 
 	public CourseDto(Course c) {
 		this.id = c.getId();
@@ -46,6 +48,8 @@ public class CourseDto {
 		this.ente = c.getEnte();
 		this.azienda = c.getAzienda();
 		this.listaIscrizione = c.getListaIscrizione().stream().map(IscrizioneDto::new).collect(Collectors.toList());
+		this.listaModuli = c.getListaModulo().stream().map(ModuloDto::new).collect(Collectors.toList());
+		
 	}
 	public CourseDto() {
 		
@@ -115,6 +119,12 @@ public class CourseDto {
 	}
 	public void setListaIscrizione(List<IscrizioneDto> listaIscrizione) {
 		this.listaIscrizione = listaIscrizione;
+	}
+	public List<ModuloDto> getListaModuli() {
+		return listaModuli;
+	}
+	public void setListaModuli(List<ModuloDto> listaModuli) {
+		this.listaModuli = listaModuli;
 	}
 	
 	

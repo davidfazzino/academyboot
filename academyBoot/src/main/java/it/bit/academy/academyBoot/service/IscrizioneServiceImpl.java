@@ -80,9 +80,10 @@ public class IscrizioneServiceImpl implements IscrizioneService{
 	}
 
 	@Override
+	@Transactional
 	public Iscrizione add(Iscrizione t) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return iscrizioneDao.save(t);
 	}
 
 	@Override

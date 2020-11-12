@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table ( name = "modulo")
 public class Modulo {
@@ -24,11 +26,13 @@ public class Modulo {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name="id")
+	@JoinColumn(name="id_corso")
+	@JsonIgnore
 	private Course course;
 	
 	@ManyToOne
-	@JoinColumn(name="id")
+	@JoinColumn(name="id_Insegnante")
+	@JsonIgnore
 	private Professor professor;
 	
 	@Column(name="nome")
@@ -39,22 +43,34 @@ public class Modulo {
 	
 	@Column(name="numero_ore")
 	private int numeroOre;
-
-	@OneToMany(mappedBy = "modulo",fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)
+	
+	@ManyToOne
+	@JoinColumn(name="aula_preferita_id")
+	private Aula aulaPreferita;
+	
+	@OneToMany(mappedBy = "modulo",fetch = FetchType.LAZY,cascade= CascadeType.REMOVE)
 	private List<Lezione> listaLezione=new ArrayList<Lezione>();
+	@OneToMany(mappedBy = "modulo",fetch = FetchType.EAGER,cascade= {CascadeType.REMOVE,CascadeType.PERSIST})
+	private List<PreferenzeCalendario> listaPreferenzaCalendario=new ArrayList<PreferenzeCalendario>();
 	
-	
+
+	public List<PreferenzeCalendario> getListaPreferenzaCalendario() {
+		return listaPreferenzaCalendario;
+	}
+	public void setListaPreferenzaCalendario(List<PreferenzeCalendario> listaPreferenzaCalendario) {
+		this.listaPreferenzaCalendario = listaPreferenzaCalendario;
+	}
 	public Modulo() {
 	
 	}
-	public Modulo(Integer id, Course corso, Professor professor, String nome, String descrizione, int numeroOre) {
-		super();
+	public Modulo(Integer id, Course corso, Professor professor, String nome, String descrizione, int numeroOre,Aula aulaPreferita) {
 		this.id = id;
 		this.course = corso;
 		this.professor = professor;
 		this.nome = nome;
 		this.descrizione = descrizione;
 		this.numeroOre = numeroOre;
+		this.aulaPreferita=aulaPreferita;
 	}
 	public Integer getId() {
 		return id;
@@ -107,11 +123,19 @@ public class Modulo {
 	public Course getCourse() {
 		return course;
 	}
+
 	
+	public Aula getAulaPreferita() {
+		return aulaPreferita;
+	}
+	public void setAulaPreferita(Aula aulaPreferita) {
+		this.aulaPreferita = aulaPreferita;
+	}
 	public void addNewLezione(Lezione l) {
 		
 		listaLezione.add(l);
 		
 	}
+	
 	
 }

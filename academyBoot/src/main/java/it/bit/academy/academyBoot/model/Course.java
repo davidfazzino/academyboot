@@ -56,10 +56,10 @@ public class Course {
 	@Column ( name ="azienda")
 	private String azienda;
 	
-	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade=CascadeType.REMOVE,orphanRemoval=true)
+	@OneToMany(mappedBy="course",fetch=FetchType.LAZY,cascade=CascadeType.REMOVE,orphanRemoval=true)
 	private List<Iscrizione> listaIscrizione=new ArrayList<Iscrizione>();
 	
-	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade=CascadeType.REMOVE,orphanRemoval=true)
+	@OneToMany(mappedBy="course",fetch=FetchType.EAGER,cascade= {CascadeType.REMOVE, CascadeType.PERSIST},orphanRemoval=true)
 	private List<Modulo> listaModulo = new ArrayList<Modulo>();
 	
 	public List<Modulo> getListaModulo() {

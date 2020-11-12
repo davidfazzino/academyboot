@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table ( name = "lezione")
@@ -21,11 +24,14 @@ public class Lezione {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinTable(name="id")
+	@JoinColumn(name="id_modulo")
+	@JsonIgnore
 	private Modulo modulo;
 	
-	@Column(name="id_aula")
-	private int idAula;
+	@ManyToOne
+	@JoinColumn(name="id_aula")
+	@JsonIgnore
+	private Aula aula;
 	
 	@Column(name="data_inizio")
 	private LocalDateTime dataInizio;
@@ -37,11 +43,10 @@ public class Lezione {
 		
 	}
 	
-	public Lezione(Integer id, Modulo modulo, int idAula, LocalDateTime dataInizio, LocalDateTime dataFine) {
-		super();
+	public Lezione(Integer id, Modulo modulo, LocalDateTime dataInizio, LocalDateTime dataFine, Aula aula) {
 		this.id = id;
 		this.modulo = modulo;
-		this.idAula = idAula;
+		this.aula = aula;
 		this.dataInizio = dataInizio;
 		this.dataFine = dataFine;
 	}
@@ -62,12 +67,18 @@ public class Lezione {
 		this.modulo = modulo;
 	}
 
-	public int getIdAula() {
-		return idAula;
+
+
+	public Aula getAula() {
+		return aula;
 	}
 
-	public void setIdAula(int idAula) {
-		this.idAula = idAula;
+	public void setAula(Aula aula) {
+		this.aula = aula;
+	}
+
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
 	}
 
 	public LocalDateTime getDataInizio() {
