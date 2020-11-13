@@ -20,7 +20,7 @@ public class ModuloDto {
 		this.idProfessor = m.getProfessor().getId();
 		this.nome = m.getNome();
 		this.numeroOre = m.getNumeroOre();
-		this.aulaPreferita = m.getAulaPreferita();
+		this.aulaPreferita = m.getAulaPreferita().getNomeAula();
 	}
 	
 
