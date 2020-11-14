@@ -47,7 +47,10 @@ class SchedulerTest {
 		LocalDate startDate=LocalDate.of(2020, 11, 12);
 		Map<LocalDate,SlotOrarioLezione> calendario=scheduler.generateSchedule(startDate);
 		LocalDate expected=LocalDate.of(2020, 11, 13);
-		assertEquals(expected, calendario.entrySet().stream().findFirst());
+		assertEquals(expected, calendario.keySet().stream().findFirst().get());
+		LocalDate lastExpected = LocalDate.of(2020, 11, 25);
+		assertEquals(lastExpected, calendario.keySet().stream().sorted((x1, x2) -> x2.compareTo(x1)).findFirst().get());
+		assertEquals(6, calendario.size());
 		
 	}
 

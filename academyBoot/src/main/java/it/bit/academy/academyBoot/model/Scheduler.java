@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,63 +29,35 @@ public class Scheduler {
 
 	public Map<LocalDate,SlotOrarioLezione> generateSchedule(LocalDate start) {
 		 Map<LocalDate,SlotOrarioLezione> calendario = new TreeMap<LocalDate, SlotOrarioLezione>();
-		 LocalDate startDate=null;
+		 LocalDate startDate=start;
 		 int monteOre = 0;
 		 DayOfWeek firstDay=start.getDayOfWeek();
 		 DayOfWeek startDay=null;
-		 //PROBLME
-		 while(monteOre<=modulo.getNumeroOre()) {
+		 int lastDayOfWeek = mappaOrari.keySet().stream().sorted((x1, x2) -> x2.getValue()-x1.getValue()).findFirst().get().getValue();
+		
+		 while(monteOre<modulo.getNumeroOre()) {
 		  for (DayOfWeek day : mappaOrari.keySet()) {
-			if(day.compareTo(firstDay)>=0) {
+			if(day.compareTo(firstDay)>=0 && monteOre<modulo.getNumeroOre()) {
 				startDay=day;
-				startDate=start.plusDays(startDay.getValue()-firstDay.getValue());
-				
-				 for(SlotOrarioLezione sol:mappaOrari.get(startDay)) {
+				startDate = startDate.with(TemporalAdjusters.next(startDay));
+
+				for(SlotOrarioLezione sol:mappaOrari.get(startDay)) {
 					  calendario.put(startDate, sol);
 					  monteOre+=ChronoUnit.HOURS.between(sol.getOraInizio(),sol.getOraFine());
-					  
-					 }
-			}
-			
-			if(firstDay.getValue()==7) {
-			firstDay=DayOfWeek.of(1);
+				}
+				if(day.getValue()==lastDayOfWeek) {
+					firstDay=DayOfWeek.of(1);
+				}else {
+					firstDay=DayOfWeek.of(day.getValue()+1);
+				}				
 			}else {
-			firstDay=DayOfWeek.of(firstDay.getValue()+1);
+				if(firstDay.getValue() > lastDayOfWeek) {
+					firstDay=DayOfWeek.of(1);
+				}
 			}
-		 }
+		  }
 		}
-		  System.out.println(startDay);
+		return calendario;
+	}
 		
-		  return calendario;
-		 }
-		
-//		 if(mappaOrari.containsKey(start.getDayOfWeek())){
-//			  for(SlotOrarioLezione sol:mappaOrari.get(start)) {
-//				  mappaGiorniCal.put(start, sol);
-//				  monteOre+=ChronoUnit.HOURS.between(sol.getOraFine(),sol.getOraInizio());
-//				 
-//			  }
-//		 while(monteOre<=modulo.getNumeroOre()) {
-//			  
-//			 Set<DayOfWeek> keys=mappaOrari.keySet();
-//				for(Iterator<DayOfWeek> i=keys.iterator();i.hasNext();) {
-//					 for(SlotOrarioLezione sol:mappaOrari.get(i.next())) {
-//						  mappaGiorniCal.put(start, sol);
-//						  monteOre+=ChronoUnit.HOURS.between(sol.getOraFine(),sol.getOraInizio());
-//						 
-//					  }
-//					
-//					i.next();
-//					 start=start.plusDays(i.next());
-//					
-					
-					
-				//}
-				 //mappaOrari.get(start.getDayOfWeek());
-		 
-				  
-			//}
-		// }
-	
-
 }

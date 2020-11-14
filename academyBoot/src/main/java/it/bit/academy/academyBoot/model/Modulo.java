@@ -50,7 +50,7 @@ public class Modulo {
 	
 	@OneToMany(mappedBy = "modulo",fetch = FetchType.LAZY,cascade= CascadeType.REMOVE)
 	private List<Lezione> listaLezione=new ArrayList<Lezione>();
-	@OneToMany(mappedBy = "modulo",fetch = FetchType.EAGER,cascade= {CascadeType.REMOVE,CascadeType.PERSIST})
+	@OneToMany(mappedBy = "modulo",fetch = FetchType.LAZY,cascade= {CascadeType.REMOVE,CascadeType.PERSIST})
 	private List<PreferenzeCalendario> listaPreferenzaCalendario=new ArrayList<PreferenzeCalendario>();
 	
 

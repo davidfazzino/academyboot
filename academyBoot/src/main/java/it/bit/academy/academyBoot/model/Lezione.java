@@ -1,6 +1,5 @@
 package it.bit.academy.academyBoot.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -9,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -45,6 +43,13 @@ public class Lezione {
 	
 	public Lezione(Integer id, Modulo modulo, LocalDateTime dataInizio, LocalDateTime dataFine, Aula aula) {
 		this.id = id;
+		this.modulo = modulo;
+		this.aula = aula;
+		this.dataInizio = dataInizio;
+		this.dataFine = dataFine;
+	}
+	
+	public Lezione(Modulo modulo, LocalDateTime dataInizio, LocalDateTime dataFine, Aula aula) {
 		this.modulo = modulo;
 		this.aula = aula;
 		this.dataInizio = dataInizio;

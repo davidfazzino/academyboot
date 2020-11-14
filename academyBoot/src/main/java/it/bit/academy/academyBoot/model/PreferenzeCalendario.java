@@ -26,12 +26,14 @@ public class PreferenzeCalendario {
 	@JoinColumn(name="id_modulo")
 	@JsonIgnore
 	private Modulo modulo;
+	
 	//controllare db
 	@Column(name="giorno")
-	
 	private DayOfWeek giorno;
+	
 	@Column(name="ora_inizio")
 	private LocalTime oraInizio;
+	
 	@Column(name="ora_fine")
 	private LocalTime oraFine;
 	
