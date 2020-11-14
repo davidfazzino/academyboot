@@ -1,5 +1,6 @@
 package it.bit.academy.academyBoot.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,10 @@ public class Modulo {
 	private String descrizione;
 	
 	@Column(name="numero_ore")
-	private int numeroOre;
+	private Integer numeroOre;
+	
+	@Column(name="data_desiderata")
+	private LocalDate dataDesiderata;
 	
 	@ManyToOne
 	@JoinColumn(name="aula_preferita_id")
@@ -63,14 +67,15 @@ public class Modulo {
 	public Modulo() {
 	
 	}
-	public Modulo(Integer id, Course corso, Professor professor, String nome, String descrizione, int numeroOre,Aula aulaPreferita) {
+	public Modulo(Integer id, Course corso, Professor professor, String nome, String descrizione, Integer numeroOre, LocalDate data, Aula aulaPreferita) {
 		this.id = id;
 		this.course = corso;
 		this.professor = professor;
 		this.nome = nome;
 		this.descrizione = descrizione;
 		this.numeroOre = numeroOre;
-		this.aulaPreferita=aulaPreferita;
+		this.dataDesiderata = data;
+		this.aulaPreferita = aulaPreferita;
 	}
 	public Integer getId() {
 		return id;
@@ -102,10 +107,10 @@ public class Modulo {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	public int getNumeroOre() {
+	public Integer getNumeroOre() {
 		return numeroOre;
 	}
-	public void setNumeroOre(int numeroOre) {
+	public void setNumeroOre(Integer numeroOre) {
 		this.numeroOre = numeroOre;
 	}
 	public Professor getProfessor() {
@@ -135,6 +140,12 @@ public class Modulo {
 		
 		listaLezione.add(l);
 		
+	}
+	public LocalDate getDataDesiderata() {
+		return dataDesiderata;
+	}
+	public void setDataDesiderata(LocalDate dataDesiderata) {
+		this.dataDesiderata = dataDesiderata;
 	}
 	
 	

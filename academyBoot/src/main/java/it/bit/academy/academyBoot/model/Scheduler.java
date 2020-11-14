@@ -42,7 +42,9 @@ public class Scheduler {
 				startDate = startDate.with(TemporalAdjusters.next(startDay));
 
 				for(SlotOrarioLezione sol:mappaOrari.get(startDay)) {
-					  calendario.put(startDate, sol);
+					//logica per capire se collide con altre lezioni  
+					
+					calendario.put(startDate, sol);
 					  monteOre+=ChronoUnit.HOURS.between(sol.getOraInizio(),sol.getOraFine());
 				}
 				if(day.getValue()==lastDayOfWeek) {
