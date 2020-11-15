@@ -21,7 +21,7 @@ public interface LezioneDao extends JpaRepository<Lezione, Integer> {
       @Query("select l from Lezione l where l.dataInizio= :date and l.aula.nomeAula=:nomeAula")
       Optional<Lezione> findByAulaAndGiorno(@Param("date") LocalDateTime date, @Param("nomeAula") String nomeAula);
       
-      @Query("select l from Lezione l where l.aula.nomeAula=:nomeAula and (l.dataInizio>=:inizio or l.dataInizio<:fine or l.dataFine>:inizio)")
+      @Query("select l from Lezione l where l.aula.nomeAula=:nomeAula and (l.dataInizio=:inizio or (l.dataInizio<:fine and l.dataInizio>:inizio) or (l.dataFine>:inizio and l.dataFine<:fine))")
       List<Lezione> findAllLessonsBetween(@Param("inizio") LocalDateTime inizio, @Param("fine") LocalDateTime fine, @Param("nomeAula") String nomeAula);
       
 }

@@ -19,7 +19,7 @@ public class Professor {
 	@Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     @Column( name ="id")
-	private int id; 
+	private Integer id; 
 	
 	@Column( name ="nome")
 	private String nome; 
@@ -56,7 +56,7 @@ public class Professor {
 	public Professor() {
 		
 	}
-	public Professor(int id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita, String email,
+	public Professor(Integer id, String nome, String cognome, String codiceFiscale, LocalDate dataDiNascita, String email,
 			String indirizzo, String telefono, int costoOrario, String partitaIva, String titoloDiStudio) {
 		this.id = id;
 		this.nome = nome;
@@ -71,11 +71,11 @@ public class Professor {
 		this.titoloDiStudio = titoloDiStudio;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

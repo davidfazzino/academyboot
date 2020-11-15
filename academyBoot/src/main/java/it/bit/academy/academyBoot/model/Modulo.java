@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 @Entity
 @Table ( name = "modulo")
 public class Modulo {
@@ -67,7 +68,8 @@ public class Modulo {
 	public Modulo() {
 	
 	}
-	public Modulo(Integer id, Course corso, Professor professor, String nome, String descrizione, Integer numeroOre, LocalDate data, Aula aulaPreferita) {
+	public Modulo(Integer id, Course corso, Professor professor, String nome, String descrizione,
+			Integer numeroOre, LocalDate data, Aula aulaPreferita) {
 		this.id = id;
 		this.course = corso;
 		this.professor = professor;
@@ -77,6 +79,18 @@ public class Modulo {
 		this.dataDesiderata = data;
 		this.aulaPreferita = aulaPreferita;
 	}
+	
+	public Modulo(Course corso, Professor professor, String nome, String descrizione,
+			Integer numeroOre, LocalDate data, Aula aulaPreferita) {
+		this.course = corso;
+		this.professor = professor;
+		this.nome = nome;
+		this.descrizione = descrizione;
+		this.numeroOre = numeroOre;
+		this.dataDesiderata = data;
+		this.aulaPreferita = aulaPreferita;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

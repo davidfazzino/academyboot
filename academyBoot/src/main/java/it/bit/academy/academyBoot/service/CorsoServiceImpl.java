@@ -15,11 +15,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.bit.academy.academyBoot.dto.CourseDto;
+import it.bit.academy.academyBoot.dto.ModuloDto;
 import it.bit.academy.academyBoot.exceptions.CourseNotFoundException;
 import it.bit.academy.academyBoot.model.Aula;
 import it.bit.academy.academyBoot.model.Course;
 import it.bit.academy.academyBoot.model.Lezione;
 import it.bit.academy.academyBoot.model.Modulo;
+import it.bit.academy.academyBoot.model.PreferenzeCalendario;
 import it.bit.academy.academyBoot.model.Scheduler;
 import it.bit.academy.academyBoot.model.SlotOrarioLezione;
 import it.bit.academy.academyBoot.repository.AulaDao;
@@ -51,9 +54,30 @@ public class CorsoServiceImpl implements CorsoService {
 	}
 
 	@Override
-	public Course add(Course t) {
-		Course c=courseDao.save(t);
-		creaCalendarioCorso(c);
+	public Course add(CourseDto t) throws CourseNotFoundException {
+		final Course c = initCourse(t);
+		List<Modulo> lm = t.getListaModuli().stream()
+			.map(m -> {
+				Modulo mod = new Modulo(c, null, m.getNome(), m.getDescrizione(), m.getNumeroOre(), m.getDataDesiderata(),
+					aulaDao.findById(m.getAulaPreferita()).get());
+				List<PreferenzeCalendario> lpc = m.getListaPreferenze().stream()
+						.map(f -> new PreferenzeCalendario(mod, f.getGiorno(), f.getOraInizio(), f.getOraFine()))
+						.collect(Collectors.toList());
+				mod.setListaPreferenzaCalendario(lpc);
+				return mod;
+				})
+			.collect(Collectors.toList());
+		
+		c.setListaModulo(lm);
+		Course def = courseDao.save(c);
+		creaCalendarioCorso(def);
+		return def;
+	}
+	
+	private Course initCourse(CourseDto dt) {
+		Course c = new Course(dt.getNome(), dt.getMateria(), dt.getMaxIscritti(),
+				dt.getCategoria(), dt.getDurataCorso(), dt.getDataInizio(),
+				dt.getOrarioMinimo());		
 		return c;
 	}
 
@@ -93,6 +117,7 @@ public class CorsoServiceImpl implements CorsoService {
 		
 	}
 	
+	//DA RISOLVERE: le ore nel DB sono arretrate di un'ora, salta il primo giorno coerente di inizio
 	private void creaCalendarioCorso(Course c) {
 		List<Modulo> listaModuli = c.getListaModulo().stream().sorted((x1, x2) -> x1.getId() - x2.getId())
 				.collect(Collectors.toList());
@@ -104,8 +129,8 @@ public class CorsoServiceImpl implements CorsoService {
 
 			LocalDate startDate = modulo.getDataDesiderata();
 			int monteOre = 0;
-			DayOfWeek firstDay = startDate.getDayOfWeek(); //controllare
-			DayOfWeek startDay = null;
+			DayOfWeek firstDay = startDate.getDayOfWeek(); //giorno della settimana della data desiderata
+			DayOfWeek startDay = null; //giorno della settimana effettivo
 			int lastDayOfWeek = mappaOrari.keySet().stream().sorted((x1, x2) -> x2.getValue() - x1.getValue())
 					.findFirst().get().getValue();
 
@@ -114,13 +139,14 @@ public class CorsoServiceImpl implements CorsoService {
 					//entro solo se la data di calendario che sto scorrendo corrisponde a una preferenza del modulo
 					if (day.compareTo(firstDay) >= 0 && monteOre < modulo.getNumeroOre()) { 
 						startDay = day;
-						startDate = startDate.with(TemporalAdjusters.next(startDay));
+						startDate = startDate.with(TemporalAdjusters.nextOrSame(startDay));
 
 						for (SlotOrarioLezione sol : mappaOrari.get(startDay)) {
 							//creo le possibili date del calendario
 							ldti = LocalDateTime.of(startDate, sol.getOraInizio());
 							ldtf = LocalDateTime.of(startDate, sol.getOraFine());
-
+							System.out.println(startDate + " " + ldti + " " + sol.getOraInizio());
+							
 							// Controllo se ci sono lezioni che collidono nell'intervallo interessato
 							List<Lezione> collisioni = lezioneDao.findAllLessonsBetween(ldti, ldtf,
 									modulo.getAulaPreferita().getNomeAula());
@@ -148,6 +174,8 @@ public class CorsoServiceImpl implements CorsoService {
 					} else {
 						if (firstDay.getValue() > lastDayOfWeek) {
 							firstDay = DayOfWeek.of(1);
+						}else {
+							
 						}
 					}
 				}
@@ -166,6 +194,11 @@ public class CorsoServiceImpl implements CorsoService {
 	public void update(Course t) {
 		
 		courseDao.save(t);
+	}
+	@Override
+	public Course add(Course t) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

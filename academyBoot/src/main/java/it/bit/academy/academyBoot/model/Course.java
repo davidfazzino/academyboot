@@ -66,8 +66,6 @@ public class Course {
 		return listaModulo;
 	}
 	
-	
-
 	public void setListaModulo(List<Modulo> listaModulo) {
 		this.listaModulo = listaModulo;
 	}

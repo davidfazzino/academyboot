@@ -1,5 +1,9 @@
 package it.bit.academy.academyBoot.controller;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import it.bit.academy.academyBoot.dto.CourseDto;
 import it.bit.academy.academyBoot.model.Course;
+import it.bit.academy.academyBoot.model.Modulo;
 import it.bit.academy.academyBoot.service.CorsoService;
 
 @RestController
@@ -39,21 +44,16 @@ public class CorsoController {
 	}
 	
 	@PostMapping()
-	public void add(@RequestBody CourseDto i) {
+	public void add(@RequestBody CourseDto cd) {
 		
 		try {
 		
-			corsoService.add(initCourse(i));
+			corsoService.add(cd);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Dati errati.");
 		}
-	}
-	private Course initCourse(CourseDto dt) {
-		return new Course(dt.getNome(), dt.getMateria(), dt.getMaxIscritti(), dt.getCategoria(), dt.getDurataCorso(), dt.getDataInizio(), dt.getOrarioMinimo());
-		
-		
 	}
 	
 	@DeleteMapping(value = "/{id}")

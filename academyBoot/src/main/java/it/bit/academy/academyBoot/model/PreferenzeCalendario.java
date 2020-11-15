@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import it.bit.academy.academyBoot.dto.PreferenzeCalendarioDto;
+
 @Entity
 @Table(name="preferenze_settimanali_modulo")
 public class PreferenzeCalendario {
@@ -44,7 +46,14 @@ public class PreferenzeCalendario {
 	}
 
 	public PreferenzeCalendario(Modulo modulo, DayOfWeek giorno, LocalTime oraInizio, LocalTime oraFine) {
+		this.modulo = modulo;
+		this.giorno = giorno;
+		this.oraInizio = oraInizio;
+		this.oraFine = oraFine;
+	}
 	
+	public PreferenzeCalendario(Integer id, Modulo modulo, DayOfWeek giorno, LocalTime oraInizio, LocalTime oraFine) {
+		this.id = id;
 		this.modulo = modulo;
 		this.giorno = giorno;
 		this.oraInizio = oraInizio;
