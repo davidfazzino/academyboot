@@ -1,9 +1,5 @@
 package it.bit.academy.academyBoot.controller;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.bit.academy.academyBoot.dto.CourseDto;
-import it.bit.academy.academyBoot.model.Course;
-import it.bit.academy.academyBoot.model.Modulo;
 import it.bit.academy.academyBoot.service.CorsoService;
 
 @RestController
