@@ -1,6 +1,7 @@
 package it.bit.academy.academyBoot.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,15 @@ public class StudentController {
 			return new ResponseEntity<List<StudentDto>>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<StudentDto>>(students, HttpStatus.OK);
+	}
+	
+	//@GetMapping(value = "/students", produces = "application/json")
+	public ResponseEntity<Map<String, Object>> findStudentsInPages(
+			@RequestParam(defaultValue = "0") Integer pageN,
+			@RequestParam(defaultValue = "5") Integer size,
+			@RequestParam(defaultValue = "id") String sortBy){
+		Map<String, Object> response = service.findStudentsInPages(pageN, size, sortBy);
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/students/{id}")
