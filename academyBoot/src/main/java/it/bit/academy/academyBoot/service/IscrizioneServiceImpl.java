@@ -12,6 +12,7 @@ import it.bit.academy.academyBoot.dto.DatiCreazioneIscrizione;
 import it.bit.academy.academyBoot.dto.IscrizioneDto;
 import it.bit.academy.academyBoot.dto.StudentDto;
 import it.bit.academy.academyBoot.exceptions.CourseNotFoundException;
+import it.bit.academy.academyBoot.exceptions.ImpossibleEnrollException;
 import it.bit.academy.academyBoot.exceptions.IscrizioneNotFoundException;
 import it.bit.academy.academyBoot.exceptions.StudentNotFoundException;
 import it.bit.academy.academyBoot.model.Course;
@@ -48,15 +49,17 @@ public class IscrizioneServiceImpl implements IscrizioneService{
 
 	@Override
 	@Transactional
-	public void add(DatiCreazioneIscrizione t) throws StudentNotFoundException,CourseNotFoundException {
-		
-		int x=4;
+	public void add(DatiCreazioneIscrizione t) throws StudentNotFoundException,CourseNotFoundException, ImpossibleEnrollException {
 		System.out.println(t.getIdStudente() +"------------"+ t.getIdCorso());
 		Student s = studentDao.findById(t.getIdStudente()).orElseThrow(()->new StudentNotFoundException("lo studente non è stato trovato"));
 		Course c = courseDao.findById(t.getIdCorso()).orElseThrow(()->new CourseNotFoundException("il corso non è stato trovato"));
-		
-		Iscrizione i= new Iscrizione(s,c,LocalDate.now());
-		iscrizioneDao.save(i);
+		int iscritti = (int)studentDao.findByCourse(c.getId()).stream().count();
+		if(iscritti < c.getMaxIscritti()) {
+			Iscrizione i= new Iscrizione(s,c,LocalDate.now());
+			iscrizioneDao.save(i);
+		}else {
+			throw new ImpossibleEnrollException("Limite iscritti raggiunto!");
+		}
 	}
 	
 	

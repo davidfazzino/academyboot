@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,12 +25,12 @@ import it.bit.academy.academyBoot.service.IscrizioneService;
 
 @RestController
 @RequestMapping("/api/iscrizione")
+@CrossOrigin
 public class IscrizioneController {
 	private IscrizioneService iscrizioneService ;
 
 	@Autowired
 	public IscrizioneController(IscrizioneService iscrizione) {
-	
 		this.iscrizioneService = iscrizione;
 	}
 	
@@ -37,12 +38,10 @@ public class IscrizioneController {
 	public void add(@RequestBody DatiCreazioneIscrizione i) {
 		
 		try {
-			
 			iscrizioneService.add(i);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Dati errati.");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Impossibile iscrivere");
 		}
 	}
 	

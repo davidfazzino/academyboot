@@ -1,21 +1,22 @@
 package it.bit.academy.academyBoot.dto;
 
 public class DatiCreazioneIscrizione {
-	private int idCorso;
-	private int idStudente;
-	public int getIdCorso() {
+	private Integer idCorso;
+	private Integer idStudente;
+	
+	public Integer getIdCorso() {
 		return idCorso;
 	}
-	public void setIdCorso(int idCorso) {
+	public void setIdCorso(Integer idCorso) {
 		this.idCorso = idCorso;
 	}
-	public int getIdStudente() {
+	public Integer getIdStudente() {
 		return idStudente;
 	}
-	public void setIdStudente(int idStudente) {
+	public void setIdStudente(Integer idStudente) {
 		this.idStudente = idStudente;
 	}
-	public DatiCreazioneIscrizione(int idCorso, int idStudente) {
+	public DatiCreazioneIscrizione(Integer idCorso, Integer idStudente) {
 		this.idCorso = idCorso;
 		this.idStudente = idStudente;
 	}

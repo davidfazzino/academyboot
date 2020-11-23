@@ -64,8 +64,18 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	@Transactional
-	public void update(Student t) {
-		studentDao.save(t);
+	public void update(Student t) throws StudentNotFoundException {
+		Student s = studentDao.findById(t.getId())
+				.orElseThrow(()->new StudentNotFoundException("Studente con id " + t.getId() + "non trovato!"));
+		s.setNome(t.getNome());
+		s.setCognome(t.getCognome());
+		//s.setCodiceFiscale(t.getCodiceFiscale());
+		s.setDataDiNascita(t.getDataDiNascita());
+		s.setIndirizzo(t.getIndirizzo());
+		s.setMail(t.getMail());
+		s.setTelefono(t.getTelefono());
+		s.setTitoloDiStudio(t.getTitoloDiStudio());
+		s.setSesso(t.isSesso());
 	}
 	
 	@Override

@@ -106,9 +106,24 @@ public class StudentController {
 		}
 	}
 	
+	
 	@PutMapping(value = "/students")
-	public void updateStudent(@RequestBody StudentDto student) {
-		service.update(initStudent(student));
+	public ResponseEntity<?> updateStudent(@RequestBody StudentDto student) {
+		try {
+			service.update(initStudent(student));
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode responseNode = mapper.createObjectNode();
+			responseNode.put("code", HttpStatus.OK.toString());
+			responseNode.put("message", "Aggiornamento dello Studente con Id " + student.getId() + " Eseguita con Successo!");
+			return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
+		} catch (StudentNotFoundException e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lo Studente non Esiste!");
+
+		}
 	}
 	
 	

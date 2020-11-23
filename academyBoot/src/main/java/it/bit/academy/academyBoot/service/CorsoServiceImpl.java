@@ -117,7 +117,7 @@ public class CorsoServiceImpl implements CorsoService {
 		
 	}
 	
-	//DA RISOLVERE: le ore nel DB sono arretrate di un'ora, salta il primo giorno coerente di inizio
+	//DA RISOLVERE: le ore nel DB sono arretrate di un'ora
 	private void creaCalendarioCorso(Course c) {
 		List<Modulo> listaModuli = c.getListaModulo().stream().sorted((x1, x2) -> x1.getId() - x2.getId())
 				.collect(Collectors.toList());
@@ -152,6 +152,7 @@ public class CorsoServiceImpl implements CorsoService {
 									modulo.getAulaPreferita().getNomeAula());
 							// Se lo slot è libero, salvo la lezione
 							if (collisioni.isEmpty() && modulo.getAulaPreferita().getCapienzaMax() >= modulo.getCorso().getMaxIscritti()) {
+								System.out.println(ldti + " " + ldtf);
 								lezioneDao.save(new Lezione(modulo, ldti, ldtf, modulo.getAulaPreferita()));
 								monteOre += ChronoUnit.HOURS.between(sol.getOraInizio(), sol.getOraFine());
 							} else { // altrimenti cerco un'altra aula libera

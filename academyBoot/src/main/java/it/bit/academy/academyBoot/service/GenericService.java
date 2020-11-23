@@ -12,6 +12,6 @@ public interface GenericService<T> {
 	T findById(int id) throws Exception;
 	T add(T t)throws Exception;
 	void remove(int id) throws Exception;
-	void update(T t);
+	void update(T t) throws StudentNotFoundException;
 	
 }
